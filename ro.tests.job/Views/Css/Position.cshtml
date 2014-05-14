@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Position";
+}
+@section scripts{
+    <link href="~/Content/position.css" rel="stylesheet" />
+}
+<h2>Position</h2>
+
+<div class="positioningContainer">
+    <div class="posStatic">
+        <span>Static</span>
+        <div class="nextElement">
+            <span>In the flow</span>
+            <p>
+                Default position
+            </p>
+        </div>
+    </div>
+
+
+    <div class="posRelative">
+        <span>Relative</span>
+        <div class="nextElement">
+            <span>In the flow</span>
+            <p>
+                Relative from the top, right and left of its normal position.
+            </p>
+        </div>
+    </div>
+
+    <div class="ancestorDiv testPositioning">
+        <div class="posAbsolute">
+            <span>Absolute</span>
+            <div class="nextElement">
+                <span>Out of the flow</span>
+                <p>
+                    Removed from the document and placed exactly wher you tell it to go.
+
+                    Relative to the nearest positioned ancestor.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="ancestorDiv fixedParent">
+        <div class="posFixed">
+            <span>Fixed</span>
+            <div class="nextElement">
+                <span>Out of the flow</span>
+                <p>Relative to the screen's view port</p>
+            </div>
+        </div>
+    </div>
+</div>

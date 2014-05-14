@@ -1,0 +1,66 @@
+﻿
+span, p {
+    font-size:larger;
+    font-weight:bold;
+    color:white;   
+}
+
+div.positioningContainer {
+    border:3px dashed black;
+}
+
+div.ancestorDiv {
+    width:500px;
+    height:500px;
+    border:3px dashed black;    
+}
+
+div.testPositioning {
+    position:absolute;
+    top:0px;
+    left:700px;
+}
+
+div.fixedParent {
+    position:relative;    
+    left:200px;    
+}
+
+div.posStatic, 
+div.posRelative, 
+div.posAbsolute,
+div.posFixed {
+    width:200px;
+    height:350px;
+    border:3px solid black;
+}
+
+div.nextElement {
+    border: 2px solid white;
+    margin:10px;
+}
+
+div.posStatic {
+    background-color: green;
+    position:static; /*Default position*/        
+}
+
+div.posRelative {
+    background-color: red;
+    position:relative; /*Enables top, right, left - Relative to where it would normally occur in the document*/
+    left:206px;
+}
+
+div.posAbsolute {
+    background-color: blue;
+    position:absolute;
+    bottom:0px;
+    right:0px;
+}
+
+div.posFixed {
+    background-color: gray;
+    position:fixed;
+    top:5px;
+    left:420px;
+}

@@ -1,17 +1,17 @@
 ﻿
 @section scripts {
-    <link href="~/Content/qunit.css" rel="stylesheet" />
-    <script src="~/Scripts/qunit.js"></script>
-    <script src="~/Scripts/app.js"></script>
-    <script src="~/Scripts/appTest.js"></script>
+    <link href="~/Content/Site.css" rel="stylesheet" />
 }
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Menu";
 }
 
-<h1 id="qunit-header">ro's qunit</h1>
-<h2 id="qunit-banner"></h2>
-<div id="qunit-testrunner-toolbar"></div>
-<h2 id="qunit-userAgent"></h2>
-<ol id="qunit-tests"></ol>
-<div id="qunit-fixture">test makeup, will be hidden</div>
+<ul>
+    <li>
+        <a href="@Url.Action("Index","JsUnitTest")" title="">Javascript Unit Tests</a>
+    </li>
+    <li>
+        <a href="@Url.Action("Position","Css")" title="">Css Possitioning</a>
+    </li>
+</ul>
+
