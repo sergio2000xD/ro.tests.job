@@ -12,3 +12,28 @@
     border: 1px solid #000;
     padding: 0 5px;
 }
+
+#FlexBox {
+    display:flexbox;    
+}
+
+.FlexBoxChild {    
+    width:250px;
+    padding: 0 5px;
+    border: 1px solid #000;
+}
+
+.totheleft {
+    float:left;
+    border: 1px solid #000;
+    padding: 0 5px;
+    width:250px;
+}
+
+.totheright {
+    float:right;
+    border: 1px solid #000;
+    padding: 0 5px;
+    width:250px;
+}
+
