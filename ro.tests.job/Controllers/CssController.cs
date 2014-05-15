@@ -16,5 +16,9 @@ namespace ro.tests.job.Controllers
             return View();
         }
 
+        public ActionResult Flex() 
+        {
+            return View();
+        }
     }
 }

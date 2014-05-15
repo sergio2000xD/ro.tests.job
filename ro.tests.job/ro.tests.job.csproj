@@ -135,6 +135,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\flex.css" />
     <Content Include="Content\position.css" />
     <Content Include="Content\qunit.css" />
     <Content Include="Global.asax" />
@@ -170,6 +171,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Css\Position.cshtml" />
     <Content Include="Views\JsUnitTest\Index.cshtml" />
+    <Content Include="Views\Css\Flex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
