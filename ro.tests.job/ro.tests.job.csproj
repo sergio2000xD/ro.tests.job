@@ -127,7 +127,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CssController.cs" />
-    <Compile Include="Controllers\GantController.cs" />
+    <Compile Include="Controllers\GanttController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JsUnitTestController.cs" />
     <Compile Include="Global.asax.cs">
@@ -141,11 +141,11 @@
     <Content Include="Content\qunit.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\Gant\gant.test.js" />
+    <Content Include="Scripts\Gantt\gantt.test.js" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\app.js" />
     <Content Include="Scripts\appTest.js" />
-    <Content Include="Scripts\Gant\gant.js" />
+    <Content Include="Scripts\Gantt\gantt.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -175,8 +175,8 @@
     <Content Include="Views\Css\Position.cshtml" />
     <Content Include="Views\JsUnitTest\Index.cshtml" />
     <Content Include="Views\Css\Flex.cshtml" />
-    <Content Include="Views\Gant\Index.cshtml" />
-    <Content Include="Views\Gant\Test.cshtml" />
+    <Content Include="Views\Gantt\Index.cshtml" />
+    <Content Include="Views\Gantt\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

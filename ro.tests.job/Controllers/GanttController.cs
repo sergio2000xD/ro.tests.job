@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace ro.tests.job.Controllers
 {
-    public class GantController : Controller
+    public class GanttController : Controller
     {
         //
         // GET: /Gant/
