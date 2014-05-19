@@ -25,6 +25,7 @@ test("start and end dates", 1, function () {
     var start = new Date(2014, 1, 1);
     var end = new Date(2014, 1, 2);
     var table = $("table:first");
+
     var gantt = new ro.GanttChart(table, start, end);
     var params = gantt.getParams();
     
@@ -42,16 +43,19 @@ test("convert milliseconds to days", 1, function () {
 
     var table = $("table:first");
 
-    var gantt = new ro.GanttChart(table,
-        new Date(start.getFullYear(), start.getMonth(), start.getDay()),
-        new Date(end.getFullYear(), end.getMonth(), end.getDay()));
+    var gantt = new ro.GanttChart(table, start, end);
 
-    var span1 = new Date(start.getFullYear(), start.getMonth(), start.getDay()).setDate(start.getDay() + 1) - gantt.getParams().start;
-    var span32 = new Date(start.getFullYear(), start.getMonth(), start.getDay()).setDate(start.getDay() + 32) - gantt.getParams().start;
-    var span365 = new Date(start.getFullYear(), start.getMonth(), start.getDay()).setDate(start.getDay() + 365) - gantt.getParams().start;
+
+    var startPlusOneDay = new Date(2014, 1, 2);
+    var startPlusOneMonth = new Date(2014, 2, 1);
+    var startPlusOneYear = new Date(2015, 1, 1);
+
+    var span1 = startPlusOneDay - start;
+    var span28 = startPlusOneMonth - start;
+    var span365 = startPlusOneYear - start;
     
     equal(gantt.millisecondsToDays(span1), 1, "one day");
-    equal(gantt.millisecondsToDays(span32), 32, "one month");
+    equal(gantt.millisecondsToDays(span28), 28, "one month");
     equal(gantt.millisecondsToDays(span365), 365, "one year");
 });
 
@@ -63,20 +67,20 @@ test("get week", 1, function () {
     var table = $("table:first");
 
     var gantt = new ro.GanttChart(table, start, end);
-    var week = gantt.getWeek(start);
+    var week = gantt.getWeek(start, new Date(2014, 0, 5));
     
     equal(week.start, start, "half week");
-    deepEqual(week.letters, ["W", "T", "F", "S"], "days calculated correctly");
+    deepEqual(week.letters, ["W", "T", "F", "S"], "half week");
 
     start = new Date(2014, 4, 18);
-    week = gantt.getWeek(start);
+    week = gantt.getWeek(start, new Date(2014, 25, 5));
     equal(week.start, start, "full week");
-    deepEqual(week.letters, ["S", "M", "T", "W", "T", "F", "S"], "days calculated correctly");
+    deepEqual(week.letters, ["S", "M", "T", "W", "T", "F", "S"], "full week");
 
     start = new Date(2014, 4, 3);
-    week = gantt.getWeek(start);
+    week = gantt.getWeek(start, new Date(2014, 4, 5));
     equal(week.start, start, "one day week");
-    deepEqual(week.letters, ["S"], "days calculated correctly");
+    deepEqual(week.letters, ["S"], "one day week");
 });
 
 test("get weeks", 1, function () {
@@ -95,4 +99,27 @@ test("get weeks", 1, function () {
     deepEqual(weeks[2].start, new Date(2014, 0, 12), "start week 3");
     deepEqual(weeks[3].start, new Date(2014, 0, 19), "start week 4");
     deepEqual(weeks[4].start, new Date(2014, 0, 26), "start week 5");
+});
+
+
+test("init headers", 1, function () {
+    expect(7);
+
+    var start = new Date(2014, 0, 1);
+    var end = new Date(2014, 0, 31);
+    var table = $("table:first");
+    var caption = "Gantt Chart";
+    var subheader = "Activities";    
+
+    var gantt = new ro.GanttChart(table, start, end);
+    var weeks = gantt.getWeeks();
+    var classes = gantt.getClasses();
+
+    equal(weeks.length, 5, "5 weeks");
+    equal(table.find("caption").html(), caption, "same caption");
+    equal(table.find("thead tr").length, 2, "two row headers");
+    equal(table.find("thead tr:first th." + classes.header.subheader).html(), subheader, "subheader");
+    equal(table.find("thead tr:first th." + classes.header.week).length, 5, "five weeks");
+    equal(table.find("thead tr:nth-child(2) th." + classes.header.usercolumn).length, 3, "3 user columns");
+    equal(table.find("thead tr:nth-child(2) th." + classes.header.day).length, 31, "31 days");
 });

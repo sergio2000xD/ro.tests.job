@@ -10,14 +10,16 @@
     ns.GanttChart = (function () {
         function Gantt(table, start, end, ganttParams, ganttClasses) {
             var _classes = {                            // (optional) Defaults:
-                headers: {
-                    mont: "gantt-mont",
-                    day: "gantt-day"
+                header: {
+                    week: "gantt-week",                    
+                    subheader: "gantt-subheader",                    
+                    usercolumn: "gantt-usercolumn",
+                    day: "gantt-day",
                 }
             }
 
             var _params = {                                     // (optional) Defaults:
-                skipDays: ["saturday", "sunday"],               // string array lowercase items
+                skipDays: [0, 6],                               // index based [0-6]
                 days: ["S", "M", "T", "W", "T", "F", "S"],      // string array 
                 columns: ["ID", "Task", "Duration"],            // string array 
                 table: undefined,                               // jQuery table
@@ -63,6 +65,9 @@
             _that.setStartDate(start);
             _that.setEndDate(end);
             _that.setTable(table);
+
+            // lastly call init
+            _that.init();
         }
 
         Gantt.prototype.millisecondsToDays = function (milliseconds) {
@@ -71,15 +76,20 @@
             return days;
         }
 
-        Gantt.prototype.getWeek = function (start) {
+        Gantt.prototype.getWeek = function (start, end) {
             var week = {
                 start: start,                
                 letters: []
             }
 
             var params = this.getParams();
+            var current = new Date(start);//clone/copy date
+
             for (var i = start.getDay() ; i < params.days.length; i++) {
-                week.letters.push(params.days[i]);                
+                if (current <= end) {                
+                    week.letters.push(params.days[i]);
+                    current.setDate(current.getDate() + 1);
+                }
             }
 
             return week;
@@ -92,10 +102,10 @@
             var days = this.millisecondsToDays(elapsed);
             var weeks = new Array();
 
-            var current = params.start;
+            var current = new Date(params.start.getTime());//clone/copy date
 
             for (var i = 0; i < days;) {
-                var week = this.getWeek(new Date(current.getTime())); //clone/copy date
+                var week = this.getWeek(new Date(current.getTime()), params.end); 
                 weeks.push(week);
                 var daysToAdd = week.letters.length;
                 i += daysToAdd;
@@ -107,20 +117,43 @@
 
         Gantt.prototype.init = function () {
             var params = this.getParams();
-            var caption = $("<caption>" + params.caption + "</caption>");
+            var classes = this.getClasses();
+            var weeks = this.getWeeks();
+
+            //clean
+            params.table.html("");
+
+            var caption = $("<caption>" + params.caption + "</caption>");            
             params.table.append(caption);
             var thead = $("<thead></thead>");
             params.table.append(thead);
 
-            var subHeader = $("<tr rowSpan='" + params.columns.length + "'>" + params.subheader + "</tr>");
-            thead.append(subHeader);
-
-            var headerRow = $("<tr></tr>");
-            thead.append(headerRow);
-
-            for (var i = 0; i < params.columns.length; i++) {
-                headerRow.append("<th>" + params.columns[i] + "</th>");
+            //first row
+            var firstRow = $("<tr></tr>");            
+            firstRow.append("<th colspan='" + params.columns.length + "' class='" + classes.header.subheader + "'>" + params.subheader + "</th>");
+            //week
+            for (var i = 0; i < weeks.length; i++) {
+                firstRow.append("<th colspan='" + weeks[i].letters.length + "' class='" + classes.header.week + "'>" + weeks[i].start.toDateString() + "</th>");
             }
+            thead.append(firstRow);
+
+            //second row
+            var secondRow = $("<tr></tr>");
+            thead.append(secondRow);
+
+            //user columns
+            for (var i = 0; i < params.columns.length; i++) {
+                secondRow.append("<th class='" + classes.header.usercolumn + "'>" + params.columns[i] + "</th>");
+            }
+
+            //week days            
+            for (var i = 0; i < weeks.length; i++) {
+                for (var j = 0; j < weeks[i].letters.length; j++) {
+                    secondRow.append("<th class='" + classes.header.day + "'>" + weeks[i].letters[j] + "</th>");
+                }                
+            }
+
+                        
         }
 
         return Gantt;
