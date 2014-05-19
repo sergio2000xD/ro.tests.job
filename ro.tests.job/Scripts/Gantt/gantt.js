@@ -95,7 +95,7 @@
             var current = params.start;
 
             for (var i = 0; i < days;) {
-                var week = this.getWeek(current);
+                var week = this.getWeek(new Date(current.getTime())); //clone/copy date
                 weeks.push(week);
                 var daysToAdd = week.letters.length;
                 i += daysToAdd;

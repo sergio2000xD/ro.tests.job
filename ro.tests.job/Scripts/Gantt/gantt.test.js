@@ -90,9 +90,9 @@ test("get weeks", 1, function () {
     var weeks = gantt.getWeeks();
 
     equal(weeks.length, 5, "5 weeks");    
-    equal(weeks[0].start, new Date(2014, 0, 1), "start week 1");
-    equal(weeks[1].start, new Date(2014, 0, 5), "start week 2");
-    equal(weeks[2].start, new Date(2014, 0, 12), "start week 3");
-    equal(weeks[3].start, new Date(2014, 0, 19), "start week 4");
-    equal(weeks[4].start, new Date(2014, 0, 26), "start week 5");
+    deepEqual(weeks[0].start, new Date(2014, 0, 1), "start week 1");
+    deepEqual(weeks[1].start, new Date(2014, 0, 5), "start week 2");
+    deepEqual(weeks[2].start, new Date(2014, 0, 12), "start week 3");
+    deepEqual(weeks[3].start, new Date(2014, 0, 19), "start week 4");
+    deepEqual(weeks[4].start, new Date(2014, 0, 26), "start week 5");
 });
