@@ -9,6 +9,7 @@
 
     ns.GanttChart = (function () {
         function Gantt(table, start, end, ganttParams, ganttClasses) {
+            var _initialized = false;
             var _classes = {                            // (optional) Defaults:
                 header: {
                     week: "gantt-week",                    
@@ -62,12 +63,17 @@
                 return _classes;
             };
 
+            _that.isInitialized = function () {
+                return _initialized;
+            };
+
             _that.setStartDate(start);
             _that.setEndDate(end);
             _that.setTable(table);
 
-            // lastly call init
+            // lastly call init            
             _that.init();
+            _initialized = true;
         }
 
         Gantt.prototype.millisecondsToDays = function (milliseconds) {
@@ -116,6 +122,8 @@
         }
 
         Gantt.prototype.init = function () {
+            if (this.isInitialized()) return;
+
             var params = this.getParams();
             var classes = this.getClasses();
             var weeks = this.getWeeks();

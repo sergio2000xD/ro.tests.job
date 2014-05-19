@@ -112,6 +112,7 @@ test("init headers", 1, function () {
     var subheader = "Activities";    
 
     var gantt = new ro.GanttChart(table, start, end);
+
     var weeks = gantt.getWeeks();
     var classes = gantt.getClasses();
 
