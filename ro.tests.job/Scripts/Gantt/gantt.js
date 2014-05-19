@@ -78,7 +78,7 @@
             }
 
             var params = this.getParams();
-            for (var i = start.getDay() ; i < params.days; i++) {
+            for (var i = start.getDay() ; i < params.days.length; i++) {
                 week.letters.push(params.days[i]);                
             }
 
@@ -101,6 +101,8 @@
                 i += daysToAdd;
                 current.setDate(current.getDate() + daysToAdd);
             }
+
+            return weeks;
         }
 
         Gantt.prototype.init = function () {
