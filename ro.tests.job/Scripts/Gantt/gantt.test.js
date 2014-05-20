@@ -126,7 +126,7 @@ test("init headers", 1, function () {
 });
 
 test("get promise", 1, function () {
-    
+    expect(1);
     var start = new Date(2014, 0, 1);
     var end = new Date(2014, 0, 31);
     var table = $("table:first");
@@ -134,4 +134,15 @@ test("get promise", 1, function () {
     var gantt = new ro.GanttChart(table, start, end);
     var promise = gantt.load("GetRows");
     notEqual(promise, null, "promise received");
+});
+
+test("load", 1, function () {
+    expect(1);
+    var start = new Date(2014, 0, 1);
+    var end = new Date(2014, 0, 31);
+    var table = $("table:first");
+
+    var gantt = new ro.GanttChart(table, start, end);
+    var promise = gantt.load("GetRows");
+    
 });

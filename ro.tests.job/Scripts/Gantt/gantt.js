@@ -16,6 +16,15 @@
                     subheader: "gantt-subheader",                    
                     usercolumn: "gantt-usercolumn",
                     day: "gantt-day",
+                },
+
+                days: {
+                    active: "gantt-active",
+                    cell: "gantt-cell"
+                },
+
+                usercolumns: {
+                    usercolumn: "gantt-usercolumn"
                 }
             }
 
@@ -135,12 +144,33 @@
                 body.append(tr);
                 
                 $.each(item.columns, function (j, col) {
-                    tr.append("<td>"+ col +"</td>");
+                    var td = $("<td></td>");
+                    td.addClass(classes.usercolumns.usercolumn);
+                    td.html(col);
+                    tr.append(td);
                 });
 
-                for (var i = 0; i < days; i++)
+
+                // skip days
+                var start = new Date(parseInt(item.start.substr(6)));//clone/copy date                
+                var end = new Date(parseInt(item.end.substr(6)));//clone/copy date
+                
+                var current = new Date(params.start);//clone/copy date
+
+                for (var j = 0; j < days; j++)
                 {
-                    tr.append("<td></td>");
+                    var td = $("<td></td>");
+                    td.addClass(classes.days.cell);
+                    tr.append(td);
+
+                    if (params.skipDays.indexOf(current.getDay()) == -1) {
+                        if (current >= start && current <= end) {
+                            td.css("background-color", item.color);
+                            td.addClass(classes.days.active);
+                        }
+                    }
+
+                    current.setDate(current.getDate() + 1);
                 }
             });
 
