@@ -71,7 +71,7 @@
             _that.setEndDate(end);
             _that.setTable(table);
 
-            // lastly call init            
+            // lastly call init
             _that.init();
             _initialized = true;
         }
@@ -119,6 +119,54 @@
             }
 
             return weeks;
+        }
+
+        Gantt.prototype.populateRows = function (d) {
+            var that = this;
+            var params = that.getParams();
+            var classes = that.getClasses();
+            var body = $("<tbody></tbody>");
+            params.table.append(body);
+
+            var days = params.table.find("thead tr:nth-child(2) th." + classes.header.day).length;
+
+            $.each(d, function (i, item) {
+                var tr = $("<tr></tr>");
+                body.append(tr);
+                
+                $.each(item.columns, function (j, col) {
+                    tr.append("<td>"+ col +"</td>");
+                });
+
+                for (var i = 0; i < days; i++)
+                {
+                    tr.append("<td></td>");
+                }
+            });
+
+        }
+
+        Gantt.prototype.load = function (url, data, success, dataType) {
+            var that = this;
+            if (!url)
+                return null;
+
+            data = data || null;
+            dataType = dataType || "json";
+
+            return $.ajax({
+                url: url,
+                data: data,
+                success: function (d) {
+
+                    that.populateRows(d);
+
+                    if (success) {
+                        success(d);
+                    }
+                },
+                dataType: dataType
+            });
         }
 
         Gantt.prototype.init = function () {

@@ -124,3 +124,14 @@ test("init headers", 1, function () {
     equal(table.find("thead tr:nth-child(2) th." + classes.header.usercolumn).length, 3, "3 user columns");
     equal(table.find("thead tr:nth-child(2) th." + classes.header.day).length, 31, "31 days");
 });
+
+test("get promise", 1, function () {
+    
+    var start = new Date(2014, 0, 1);
+    var end = new Date(2014, 0, 31);
+    var table = $("table:first");
+
+    var gantt = new ro.GanttChart(table, start, end);
+    var promise = gantt.load("GetRows");
+    notEqual(promise, null, "promise received");
+});
