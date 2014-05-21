@@ -49,10 +49,10 @@ namespace ro.tests.job.Controllers
         public ActionResult GetRows()
         {
             List<GanttTask> data = new List<GanttTask>();
-            data.Add(new GanttTask("1", "Modulo Login Kongestor", "2 days") { color = "red", start = new DateTime(2014, 1, 1), end = new DateTime(2014, 1, 3)});
-            data.Add(new GanttTask("2", "Landing Page Kongestor", "2 weeks") { color = "green", start = new DateTime(2014, 1, 3), end= new DateTime(2014, 1, 17)});
-            data.Add(new GanttTask("3", "Alta usuarios Kongestor", "4 days") { color = "blue", start = new DateTime(2014, 1, 17), end= new DateTime(2014, 1, 21)});
-            data.Add(new GanttTask("4", "Autodestruir Kongestor", "10 days") { color = "gray", start = new DateTime(2014, 1, 21), end = new DateTime(2014, 1, 31) });
+            data.Add(new GanttTask("1", "Modulo Login Kongestor", "1 hora diaria") { color = "red", start = new DateTime(2014, 1, 1), end = new DateTime(2014, 1, 3)});
+            data.Add(new GanttTask("2", "Landing Page Kongestor", "2 horas diarias") { color = "green", start = new DateTime(2014, 1, 3), end= new DateTime(2014, 1, 17)});
+            data.Add(new GanttTask("3", "Alta usuarios Kongestor", "4 horas diarias") { color = "blue", start = new DateTime(2014, 1, 17), end= new DateTime(2014, 1, 21)});
+            data.Add(new GanttTask("4", "Autodestruir Kongestor", "5 horas diarias") { color = "purple", start = new DateTime(2014, 1, 21), end = new DateTime(2014, 1, 31) });
 
             return Json(data.ToArray(), JsonRequestBehavior.AllowGet);
         }

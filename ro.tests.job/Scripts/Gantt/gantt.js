@@ -14,13 +14,14 @@
                 header: {
                     week: "gantt-week",                    
                     subheader: "gantt-subheader",                    
-                    usercolumn: "gantt-usercolumn",
+                    usercolumn: "gantt-husercolumn",
                     day: "gantt-day",
                 },
 
                 days: {
                     active: "gantt-active",
-                    cell: "gantt-cell"
+                    cell: "gantt-cell",
+                    dayoff: "gantt-dayoff"
                 },
 
                 usercolumns: {
@@ -39,9 +40,53 @@
                 end: undefined                                  // js Date object
             }
 
-            var _that = this;
-            var _params = ganttParams || _params;            
-            var _classes = ganttClasses || _classes;
+            var _that = this;            
+            if (ganttParams) {
+                if ("skipDays" in ganttParams)
+                    _params.skipDays = ganttParams.skipDays;
+                if ("days" in ganttParams)
+                    _params.days = ganttParams.days;
+                if ("columns" in ganttParams)
+                    _params.columns = ganttParams.columns;
+                if ("caption" in ganttParams)
+                    _params.caption = ganttParams.caption;
+                if ("subheader" in ganttParams)
+                    _params.subheader = ganttParams.subheader;
+            }
+            if (ganttClasses)
+            {
+                if ("header" in ganttClasses)
+                {
+                    if ("week" in ganttClasses.header) {
+                        _classes.header.week = ganttClasses.header.week;
+                    }
+                    if ("subheader" in ganttClasses.header) {
+                        _classes.header.subheader = ganttClasses.header.subheader;
+                    }
+                    if ("usercolumn" in ganttClasses.header) {
+                        _classes.header.usercolumn = ganttClasses.header.usercolumn;
+                    }
+                    if ("day" in ganttClasses.header) {
+                        _classes.header.day = ganttClasses.header.day;
+                    }
+                }
+                if ("days" in ganttClasses) {
+                    if ("active" in ganttClasses.days) {
+                        _classes.days.active = ganttClasses.days.active;
+                    }
+                    if ("cell" in ganttClasses.days) {
+                        _classes.days.cell = ganttClasses.days.cell;
+                    }
+                    if ("dayoff" in ganttClasses.days) {
+                        _classes.days.dayoff = ganttClasses.days.dayoff;
+                    }
+                }
+                if ("usercolumns" in ganttClasses) {
+                    if ("usercolumn" in ganttClasses.usercolumns) {
+                        _classes.usercolumns.usercolumn = ganttClasses.usercolumns.usercolumn;
+                    }
+                }                
+            }
 
             _that.setTable = function (table) {
                 if (!table) {
@@ -130,11 +175,14 @@
             return weeks;
         }
 
-        Gantt.prototype.populateRows = function (d) {
+        Gantt.prototype.populateJson = function (d) {
             var that = this;
             var params = that.getParams();
             var classes = that.getClasses();
             var body = $("<tbody></tbody>");
+
+            params.table.find("tbody").remove();
+
             params.table.append(body);
 
             var days = params.table.find("thead tr:nth-child(2) th." + classes.header.day).length;
@@ -168,6 +216,8 @@
                             td.css("background-color", item.color);
                             td.addClass(classes.days.active);
                         }
+                    } else {
+                        td.addClass(classes.days.dayoff);
                     }
 
                     current.setDate(current.getDate() + 1);
@@ -176,26 +226,21 @@
 
         }
 
-        Gantt.prototype.load = function (url, data, success, dataType) {
+        Gantt.prototype.loadJson = function (url, data) {
             var that = this;
             if (!url)
                 return null;
 
-            data = data || null;
-            dataType = dataType || "json";
+            data = data || null;            
 
+            //return promise
             return $.ajax({
                 url: url,
                 data: data,
                 success: function (d) {
-
-                    that.populateRows(d);
-
-                    if (success) {
-                        success(d);
-                    }
+                    that.populateJson(d);
                 },
-                dataType: dataType
+                dataType: "json"
             });
         }
 
@@ -237,9 +282,7 @@
                 for (var j = 0; j < weeks[i].letters.length; j++) {
                     secondRow.append("<th class='" + classes.header.day + "'>" + weeks[i].letters[j] + "</th>");
                 }                
-            }
-
-                        
+            }                        
         }
 
         return Gantt;

@@ -132,17 +132,33 @@ test("get promise", 1, function () {
     var table = $("table:first");
 
     var gantt = new ro.GanttChart(table, start, end);
-    var promise = gantt.load("GetRows");
+    var promise = gantt.loadJson("GetRows");
     notEqual(promise, null, "promise received");
 });
 
-test("load", 1, function () {
-    expect(1);
-    var start = new Date(2014, 0, 1);
-    var end = new Date(2014, 0, 31);
+asyncTest("loadJson async", 1, function () {
+    expect(5);
     var table = $("table:first");
 
-    var gantt = new ro.GanttChart(table, start, end);
-    var promise = gantt.load("GetRows");
-    
+    var gantt = new ro.GanttChart(table, new Date(2014, 0, 1), new Date(2014, 0, 31));
+    var promise = gantt.loadJson("GetRows");
+    var classes = gantt.getClasses();
+    /*
+        var start1 = new Date(2014, 0, 1);
+        var end1 = new Date(2014, 0, 3);
+        var start2 = new Date(2014, 0, 3);
+        var end2 = new Date(2014, 0, 17);
+        var start3 = new Date(2014, 0, 17);
+        var end3 = new Date(2014, 0, 21);
+        var start4 = new Date(2014, 0, 21);
+        var end4 = new Date(2014, 0, 31);
+    */
+    promise.done(function (d) {
+        equal(4, table.find("tbody tr").length, "for rows");        
+        equal(3, table.find("tbody tr:nth-child(1) td." + classes.days.active).length, "first row");
+        equal(11, table.find("tbody tr:nth-child(2) td." + classes.days.active).length, "second row");
+        equal(3, table.find("tbody tr:nth-child(3) td." + classes.days.active).length, "third row");
+        equal(9, table.find("tbody tr:nth-child(4) td." + classes.days.active).length, "fourth row");        
+        start();
+    });          
 });

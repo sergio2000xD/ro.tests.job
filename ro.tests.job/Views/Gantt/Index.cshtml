@@ -1,207 +1,278 @@
-﻿@section scripts{
-    <link href="~/Content/qunit.css" rel="stylesheet" />
-    <script src="~/Scripts/qunit.js"></script>
-    <script src="~/Scripts/Gant/gant.js"></script>
-    <script src="~/Scripts/Gant/gant.test.js"></script>
+﻿@section scripts{    
+    <script src="~/Scripts/Gantt/gantt.js"></script>
+    <style>
+        table {
+            font-family: sans-serif Verdana;
+            border: 2px solid black;
+            border-collapse: collapse;
+	        border-spacing: 0;            
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        .gantt-week {
+            background-color: #fff;
+        }
+        .gantt-subheader {
+            background-color: #fff;
+        }
+        .gantt-husercolumn {
+            background-color: #fff;
+        }
+        .gantt-usercolumn {
+            background-color: #fff;
+        }
+        .gantt-day {
+            background-color: #fff;
+        }
+        .gantt-cell {
+            background-color: #fff;
+        }
+        .gantt-usercolumn {
+            background-color: #fff;
+        }
+        .gantt-dayoff {
+            background-color: #fff;
+        }
+        .gantt-cell {
+            background-color: #fff;
+        }
+
+        #info {
+            position:relative;
+            top:10px;
+            color:red;
+            border:solid 2px gray;
+            width:300px;
+            height:50px;
+            padding:5px;
+
+        }
+    </style>
+    <script>
+        function tdEnter(td) {
+            var content = td.attr("class");
+            $("#info").html(content);
+
+            if (content.indexOf("gantt-active") == -1) {
+                td.css("background-color", "gray");
+            }
+        }
+        function tdleave(td) {            
+            $("#info").html("");
+            var content = td.attr("class");
+            if (content.indexOf("gantt-active") == -1) {
+                td.css("background-color", "#fff");
+            }
+        }
+
+        $(function () {            
+            var table = $("table:first");
+            var start = new Date(2014, 0, 1);
+            var end = new Date(2014, 0, 31);
+            var gantt = new ro.GanttChart(table, start, end);
+            gantt.loadJson("@Url.Action("GetRows", "Gantt")");
+
+            table.on("mouseover", "td", function () {
+                var td = $(this);
+                tdEnter(td);
+            });
+            table.on("mouseout", "td", function () {
+                var td = $(this);
+                tdleave(td);
+            });
+            table.on("mouseover", "th", function () {
+                var th = $(this);
+                tdEnter(th);
+            });
+            table.on("mouseout", "th", function () {
+                var th = $(this);
+                tdleave(th);
+            });
+        });
+    </script>    
 }
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "The ro.Gant Object";
 }
 
-<h2>Index</h2>
+<h2>The ro.Gant Object</h2>
 
-<table border="1">
-    <caption>Gantt Chart</caption>
-    <thead>
-        <tr>
-            <th class="gantt-subheader" colspan="3">Activities</th>
-            <th class="gantt-week" colspan="4">Wed Jan 1 2014</th>
-            <th class="gantt-week" colspan="7">Sun Jan 5 2014</th>
-            <th class="gantt-week" colspan="7">Sun Jan 12 2014</th>
-            <th class="gantt-week" colspan="7">Sun Jan 19 2014</th>
-            <th class="gantt-week" colspan="6">Sun Jan 26 2014</th>
-        </tr>
-        <tr>
-            <th class="gantt-usercolumn">ID</th>
-            <th class="gantt-usercolumn">Task</th>
-            <th class="gantt-usercolumn">Duration</th>
-            <th class="gantt-day">W</th>
-            <th class="gantt-day">T</th>
-            <th class="gantt-day">F</th>
-            <th class="gantt-day">S</th>
-            <th class="gantt-day">S</th>
-            <th class="gantt-day">M</th>
-            <th class="gantt-day">T</th>
-            <th class="gantt-day">W</th>
-            <th class="gantt-day">T</th>
-            <th class="gantt-day">F</th>
-            <th class="gantt-day">S</th>
-            <th class="gantt-day">S</th>
-            <th class="gantt-day">M</th>
-            <th class="gantt-day">T</th>
-            <th class="gantt-day">W</th>
-            <th class="gantt-day">T</th>
-            <th class="gantt-day">F</th>
-            <th class="gantt-day">S</th>
-            <th class="gantt-day">S</th>
-            <th class="gantt-day">M</th>
-            <th class="gantt-day">T</th>
-            <th class="gantt-day">W</th>
-            <th class="gantt-day">T</th>
-            <th class="gantt-day">F</th>
-            <th class="gantt-day">S</th>
-            <th class="gantt-day">S</th>
-            <th class="gantt-day">M</th>
-            <th class="gantt-day">T</th>
-            <th class="gantt-day">W</th>
-            <th class="gantt-day">T</th>
-            <th class="gantt-day">F</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="gantt-usercolumn">1</td>
-            <td class="gantt-usercolumn">Modulo Login Kongestor</td>
-            <td class="gantt-usercolumn">2 days</td>
-            <td class="gantt-cell gantt-active" style="background-color: red;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: red;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: red;"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-        </tr>
-        <tr>
-            <td class="gantt-usercolumn">2</td>
-            <td class="gantt-usercolumn">Landing Page Kongestor</td>
-            <td class="gantt-usercolumn">2 weeks</td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell gantt-active" style="background-color: green;"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell gantt-active" style="background-color: green;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: green;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: green;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: green;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: green;"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell gantt-active" style="background-color: green;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: green;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: green;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: green;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: green;"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-        </tr>
-        <tr>
-            <td class="gantt-usercolumn">3</td>
-            <td class="gantt-usercolumn">Alta usuarios Kongestor</td>
-            <td class="gantt-usercolumn">4 days</td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell gantt-active" style="background-color: blue;"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell gantt-active" style="background-color: blue;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: blue;"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-        </tr>
-        <tr>
-            <td class="gantt-usercolumn">4</td>
-            <td class="gantt-usercolumn">Autodestruir Kongestor</td>
-            <td class="gantt-usercolumn">10 days</td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell gantt-active" style="background-color: gray;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: gray;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: gray;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: gray;"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell"></td>
-            <td class="gantt-cell gantt-active" style="background-color: gray;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: gray;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: gray;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: gray;"></td>
-            <td class="gantt-cell gantt-active" style="background-color: gray;"></td>
-        </tr>
-    </tbody>
-</table>
+<table></table>
+
+<article>
+    <header>
+        <hgroup>
+            <h1>
+                TD and TH associated classes
+            </h1>
+            <h2>
+                Move the mose over the cells to see its classes
+            </h2>
+        </hgroup>
+    </header>
+    <div id="info"></div>
+</article>
+
+
+<article>
+    <header>
+        <hgroup>
+            <h1>
+                Usage
+            </h1>
+            <h2>
+                Add gantt.js reference to your page
+                in your scripts section
+            </h2>
+        </hgroup>
+    </header>
+<div>
+        &lt;script src="~/Scripts/Gantt/gantt.js"&gt&lt;/script&gt;
+</div>        
+
+</article>
+
+
+
+<article>
+    <header>
+        <hgroup>
+            <h1>
+                Initialization
+            </h1>
+            <h2>
+                new ro.GanttChart(table, start, end);
+            </h2>
+        </hgroup>
+    </header>
+<pre>
+    <code>        
+    var table = $("table:first");
+    var start = new Date(2014, 0, 1);
+    var end = new Date(2014, 0, 31);
+    
+    var gantt = new ro.GanttChart(table, start, end);
+    gantt.loadJson("@Url.Action("GetRows", "Gantt")");
+
+    // oprtionally you can pass data to your server action
+    //gantt.loadJson("@Url.Action("GetRows", "Gantt")", {id: 1});
+    </code>
+</pre>
+</article>
+
+<article>
+    <header>
+        <hgroup>
+            <h1>
+                Optional parameters
+            </h1>            
+        </hgroup>
+        <ul>
+            <li>
+                ganttParams
+            </li>
+            <li>
+                ganttClasses
+            </li>
+        </ul>
+    </header>
+<pre>
+    <code>        
+    var params = 
+    {                                                   // (optional) Defaults:
+        skipDays: [0, 6],                               // index based [0-6] 0 corresponds to sundays
+        days: ["S", "M", "T", "W", "T", "F", "S"],      // string array 
+        columns: ["ID", "Task", "Duration"],            // string array     
+        caption: "Gantt Chart",                         // string
+        subheader: "Activities",                        // string    
+    }
+    var classes = 
+    {
+        header: {
+            week: "gantt-week",                    
+            subheader: "gantt-subheader",                    
+            usercolumn: "gantt-husercolumn",
+            day: "gantt-day",
+        },
+
+        days: {
+            active: "gantt-active",
+            cell: "gantt-cell",
+            dayoff: "gantt-dayoff"
+        },
+
+        usercolumns: {
+            usercolumn: "gantt-usercolumn"
+        }
+    }
+
+    var table = $("table:first");
+    var start = new Date(2014, 0, 1);
+    var end = new Date(2014, 0, 31);
+    
+    var gantt = new ro.GanttChart(table, start, end, params, classes);
+    gantt.loadJson("@Url.Action("GetRows", "Gantt")");
+    </code>
+</pre>
+</article>
+
+
+<article>
+    <header>
+        <hgroup>
+            <h1>
+                Events
+            </h1>
+            <h2>
+                var promise = gantt.loadJson("@Url.Action("GetRows", "Gantt")");
+            </h2>
+        </hgroup>
+    </header>
+<pre>
+    <code>        
+    var table = $("table:first");
+    var start = new Date(2014, 0, 1);
+    var end = new Date(2014, 0, 31);
+    
+    var gantt = new ro.GanttChart(table, start, end);
+    var promise = gantt.loadJson("@Url.Action("GetRows", "Gantt")");
+    
+    promise.done(function (d) {
+        alert("server returned " + d.length + " rows");
+    }); 
+    </code>
+</pre>
+</article>
+
+
+<article>
+    <header>
+        <hgroup>
+            <h1>
+                Json array of rows returned from server
+            </h1>            
+        </hgroup>
+    </header>
+<pre>
+    <code>        
+    // General format:
+    [
+        {
+            "columns":["col 1","col 1","col 3"],  //user columns values
+            "start":"/Date(1388556000000)/",      //C# DateTime serialized to json
+            "end":"/Date(1388728800000)/",        //C# DateTime serialized to json
+            "color":"red"                         //css3 valid color
+        },        
+    ] 
+    // In tihs example:
+    [
+	    {"columns":["1","Modulo Login Kongestor","2 days"],"start":"/Date(1388556000000)/","end":"/Date(1388728800000)/","color":"red"},
+	    {"columns":["2","Landing Page Kongestor","2 weeks"],"start":"/Date(1388728800000)/","end":"/Date(1389938400000)/","color":"green"},
+	    {"columns":["3","Alta usuarios Kongestor","4 days"],"start":"/Date(1389938400000)/","end":"/Date(1390284000000)/","color":"blue"},
+	    {"columns":["4","Autodestruir Kongestor","10 days"],"start":"/Date(1390284000000)/","end":"/Date(1391148000000)/","color":"gray"}
+    ]
+    </code>
+</pre>
+</article>
