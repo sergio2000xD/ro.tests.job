@@ -130,6 +130,7 @@
     <Compile Include="Controllers\GanttController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JsUnitTestController.cs" />
+    <Compile Include="Controllers\RegexController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -159,6 +160,7 @@
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\qunit.js" />
+    <Content Include="Scripts\Regex\Regex.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -177,6 +179,8 @@
     <Content Include="Views\Css\Flex.cshtml" />
     <Content Include="Views\Gantt\Index.cshtml" />
     <Content Include="Views\Gantt\Test.cshtml" />
+    <Content Include="Views\Regex\Index.cshtml" />
+    <Content Include="Scripts\Regex\Regex.test.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
