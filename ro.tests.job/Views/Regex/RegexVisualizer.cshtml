@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "RegexVisualizer";
+}
+@section scripts{
+    <script src="~/Scripts/Regex/RegexFormatter.js"></script>
+}
+<h2>Shows in red letters matching the Regular Expresion</h2>
+
+Enter value: <input type="text" id="theInput" />
+<br />
+Enter regex: <input type="text" id="theRegex" />
+
+<br />
+<input type="button" id="evaluate" value="Evaluate" />
+<br />
+Show Result:
+<div id="theResult" style="border:2px solid black">
+
+</div>

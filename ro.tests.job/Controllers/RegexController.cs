@@ -15,6 +15,9 @@ namespace ro.tests.job.Controllers
         {
             return View();
         }
-
+        public ActionResult RegexVisualizer() 
+        {
+            return View();
+        }
     }
 }
