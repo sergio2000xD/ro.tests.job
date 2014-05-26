@@ -128,6 +128,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CssController.cs" />
     <Compile Include="Controllers\GanttController.cs" />
+    <Compile Include="Controllers\HeaderDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JsUnitTestController.cs" />
     <Compile Include="Controllers\RegexController.cs" />
@@ -185,6 +186,8 @@
     <Content Include="Views\Regex\Index.cshtml" />
     <Content Include="Scripts\Regex\Regex.test.js" />
     <Content Include="Views\Regex\RegexVisualizer.cshtml" />
+    <Content Include="Views\HeaderData\Index.cshtml" />
+    <Content Include="Views\HeaderData\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
