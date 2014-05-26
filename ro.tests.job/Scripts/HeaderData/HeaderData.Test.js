@@ -1,128 +1,100 @@
-﻿/*
-    Possible object to return from server:
-    ======================================
+﻿test("header is built", 1, function () {
+    expect(17);
+
+    var mainDiv = $("#myHeader");
+    var header = new CM.Header(mainDiv);    
+    var classes = header.getClasses();
+
+    ok(classes.mainDiv.length > 0, "mainDiv classes set");
+    ok(classes.wrapperDiv.length > 0, "wrapperDiv classes set");
+    ok(classes.headersDiv.length > 0, "headersDiv classes set");
+    ok(classes.buttonsDiv.length > 0, "buttonsDiv classes set");
+    ok(classes.headersUl.length > 0, "headersUl classes set");
+    ok(classes.buttonsUl.length > 0, "buttonsUl classes set");
+
+    equal(mainDiv.attr("class"), classes.mainDiv, "main div has proper classes");
+
+    var wrapperDiv = mainDiv.find("div:first");
+    ok(wrapperDiv.length === 1, "wrapper div found");
+    equal(wrapperDiv.attr("class"), classes.wrapperDiv, "wrapper div has proper classes");
+
+    var headersDiv = wrapperDiv.find("div:first");
+    ok(headersDiv.length === 1, "headers div found");
+    equal(headersDiv.attr("class"), classes.headersDiv, "headers div has proper classes");
+
+    var buttonsDiv = wrapperDiv.find("div:eq(1)");
+    ok(buttonsDiv.length === 1, "buttonsDiv div found");
+    equal(buttonsDiv.attr("class"), classes.buttonsDiv, "buttonsDiv div has proper classes");
+    
+    var headersUl = headersDiv.find("ul:first");
+    ok(headersUl.length === 1, "headers ul found");
+    equal(headersUl.attr("class"), classes.headersUl, "headers ul has proper classes");
+
+    var buttonsUl = buttonsDiv.find("ul:first");
+    ok(buttonsUl.length === 1, "buttons ul found");
+    equal(buttonsUl.attr("class"), classes.buttonsUl, "buttons ul has proper classes");
+});
+
+test("add header", 1, function () {
+    expect(10);
+
+    var mainDiv = $("#myHeader");
+    var header = new CM.Header(mainDiv);
+    var classes = header.getClasses();
+
+    var title = "Environments";
+    var subtitle = "The African Jungle";
+
+    header.addHeader(title, subtitle);
+
+    ok(classes.titleSpan.length > 0, "subtitleSpan classes set");
+    ok(classes.subtitleSpan.length > 0, "subtitleSpan classes set");
+
+    var headersUl = mainDiv.find("div > div:first > ul:first");
+    ok(headersUl.length === 1, "headers ul found");
+    equal(headersUl.attr("class"), classes.headersUl, "headers ul has proper classes");
+
+    var li = headersUl.find("li");
+    ok(li.length === 1, "li header found");
+
+    var spanTitle = li.find("span:first");
+    var spanSubtitle = li.find("span:eq(1)");
+
+    ok(spanTitle.length === 1, "span title found");
+    equal(spanTitle.attr("class"), classes.titleSpan, "span title has proper classes");
+
+    ok(spanSubtitle.length === 1, "span subtitle found");
+    equal(spanSubtitle.attr("class"), classes.subtitleSpan, "span subtitle  has proper classes");
+
+    header.removeHeader(0);
+    var li = headersUl.find("li");
+    ok(li.length === 0, "li header removed");
+});
+
+test("add button", 1, function () {
+    expect(4);
+
+    var mainDiv = $("#myHeader");
+    var header = new CM.Header(mainDiv);
+    var classes = header.getClasses();
+
+    var text = "Edit";
+    var attrHref = "#";
+    var called = false;
+    var onclickCallback = function ()
     {
-	    headers:[
-            {
-                header: "Product Name"
-                subheader: "Aquos 70" 4K TV"
-            },
-            {
-                header: "Product ID"
-                subheader: "AQ-70-8321Z"
-            },
-            {
-                header: "Product Description"
-                subheader: "Television"
-            },
-            {
-                header: "Customers"
-                subheader: "Surveys"
-            }
-        ],
-        buttons:["Customers", "Surveys", "Edit"]    
+        called = true;
     }
-*/
 
+    var buttonsUl = mainDiv.find("div > div:eq(1) > ul:first");
+    ok(buttonsUl.length === 1, "buttons ul found");
+    equal(buttonsUl.attr("class"), classes.buttonsUl, "buttons Ul has proper classes");
 
-(function () {
-    this.CM = this.CM || {};
-    var ns = this.CM;
+    var returnedLi = header.addButton(text, attrHref, onclickCallback);
 
-    ns.Header = (function () {
-        function Header(div) {
+    var li = buttonsUl.find("li");
+    ok(li.length === 1, "li button found");
 
-            var _classes = {
-                mainDiv: "row fringe-clear",
-                wrapperDiv: "c12 bg-gradient header-data",
-                headersDiv: "c8 buffer-clear",
-                buttonsDiv: "c4 buffer-clear",
-                headersUl: "header-list",
-                buttonsUl: "tabs pull-right",
-                titleSpan: "title",
-                subtitleSpan: "subtitle",
-
-            }
-
-            var _mainDiv = div.addClass(_classes.mainDiv);
-            var _wrapperDiv = $("<div></div>").addClass(_classes.wrapperDiv);
-            var _headersDiv = $("<div></div>").addClass(_classes.headersDiv);
-            var _buttonsDiv = $("<div></div>").addClass(_classes.buttonsDiv);
-            var _headersUl = $("<ul></ul>").addClass(_classes.headersUl);
-            var _buttonsUl = $("<ul></ul>").addClass(_classes.buttonsUl);
-            var _titleSpan = $("<span></span>").addClass(_classes.titleSpan);
-            var _subtitleSpan = $("<span></span>").addClass(_classes.subtitleSpan);
-
-            _mainDiv.append(_wrapperDiv);
-            _wrapperDiv.append(_headersDiv);
-            _wrapperDiv.append(_buttonsDiv);
-            _headersDiv.append(_headersUl);
-            _buttonsDiv.append(_buttonsUl)
-
-            var _that = this;
-            _that.getMainDiv = function () {
-                return _mainDiv;
-            }
-
-            _that.getClasses = function () {
-                return _classes;
-            }
-        }
-
-        Header.prototype.addHeader = function (title, subtitle) {
-            var _div = this.getMainDiv();
-            var _classes = this.getMainDiv();
-            var _ul = _div.find("ul." + _classes.headersUl);
-            var _li = $("<li></li>");
-            var _title = $("<span></span>").addClass(_classes.titleSpan);
-            var _subtitle = $("<span></span>").addClass(_classes.subtitleSpan);
-
-            _title.html(title);
-            _subtitle.html(subtitle);
-
-            _li.append(title);
-            _li.append(subtitle);
-
-            _ul.append(_li);
-
-            return _li;
-        }
-
-        Header.prototype.addButton = function (text, attrHref, onclickCallback) {
-            var _div = this.getMainDiv();
-            var _classes = this.getMainDiv();
-            var _ul = _div.find("ul." + _classes.buttonsUl);
-            var _li = $("<li></li>");
-            var _a = $("<a><i></i></a>");
-
-            _a.addClass(text).append(text);
-            _a.attr("href", attrHref || "#");
-
-            _li.append(_a);
-            _ul.append(_li);
-
-            if (onclickCallback || typeof onclickCallback === "function") {
-                _a.on("click", onclickCallback);
-            }
-
-            return _li;
-        }
-
-        Header.prototype.removeHeader = function (index) {
-            var _div = this.getMainDiv();
-            var _classes = this.getMainDiv();
-            var _ul = _div.find("ul." + _classes.headersUl);
-            return _ul.find("li:eq(" + index + ")").remove();
-        }
-
-        Header.prototype.removeButton = function (index) {
-            var _div = this.getMainDiv();
-            var _classes = this.getMainDiv();
-            var _ul = _div.find("ul." + _classes.buttonsUl);
-            return _ul.find("li:eq(" + index + ")").remove();
-        }
-
-        return Header;
-    })();
-
-}());
+    deepEqual(returnedLi, li, "li returned fine");
+    
+});
