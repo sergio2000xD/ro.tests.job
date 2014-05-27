@@ -66,12 +66,12 @@
             _that.getClasses = function () {
                 return _classes;
             }
-        }
+        }        
 
         Header.prototype.addHeader = function (title, subtitle) {
             var _div = this.getMainDiv();
             var _classes = this.getClasses();
-            var _ul = _div.find("ul." + _classes.headersUl);
+            var _ul = _div.find("ul[class='" + _classes.headersUl + "']");
             var _li = $("<li></li>");
             var _title = $("<span></span>").addClass(_classes.titleSpan);
             var _subtitle = $("<span></span>").addClass(_classes.subtitleSpan);
@@ -89,12 +89,12 @@
 
         Header.prototype.addButton = function (text, attrHref, onclickCallback) {
             var _div = this.getMainDiv();
-            var _classes = this.getClasses();
-            var _ul = _div.find("ul." + _classes.buttonsUl);
+            var _classes = this.getClasses();            
+            var _ul = _div.find("ul[class='" + _classes.buttonsUl + "']");
             var _li = $("<li></li>");
             var _a = $("<a><i></i></a>");
 
-            _a.addClass(text).append(text);
+            _a.addClass(text.toLowerCase()).append(text);
             _a.attr("href", attrHref || "#");
 
             _li.append(_a);
@@ -110,15 +110,17 @@
         Header.prototype.removeHeader = function (index) {
             var _div = this.getMainDiv();
             var _classes = this.getClasses();
-            var _ul = _div.find("ul." + _classes.headersUl);
+            var _ul = _div.find("ul[class='" + _classes.headersUl + "']");            
             return _ul.find("li:eq(" + index + ")").remove();
         }
 
         Header.prototype.removeButton = function (index) {
             var _div = this.getMainDiv();
-            var _classes = this.getClasses();
-            var _ul = _div.find("ul." + _classes.buttonsUl);
-            return _ul.find("li:eq(" + index + ")").remove();
+            var _classes = this.getClasses();            
+            var _ul = _div.find("ul[class='" + _classes.buttonsUl + "']");
+            var _li = _ul.find("li:eq(" + index + ")").remove();
+            _li.off(); // remove handlers
+            return _li;
         }
 
         return Header;

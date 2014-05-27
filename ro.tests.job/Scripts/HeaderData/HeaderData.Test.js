@@ -72,7 +72,7 @@ test("add header", 1, function () {
 });
 
 test("add button", 1, function () {
-    expect(4);
+    expect(11);
 
     var mainDiv = $("#myHeader");
     var header = new CM.Header(mainDiv);
@@ -83,18 +83,32 @@ test("add button", 1, function () {
     var called = false;
     var onclickCallback = function ()
     {
-        called = true;
+        called = !called;
     }
 
     var buttonsUl = mainDiv.find("div > div:eq(1) > ul:first");
     ok(buttonsUl.length === 1, "buttons ul found");
     equal(buttonsUl.attr("class"), classes.buttonsUl, "buttons Ul has proper classes");
 
-    var returnedLi = header.addButton(text, attrHref, onclickCallback);
+    var returnedLi = header.addButton(text, attrHref, onclickCallback);    
 
     var li = buttonsUl.find("li");
-    ok(li.length === 1, "li button found");
+    ok(li.length === 1, "li button found");    
 
-    deepEqual(returnedLi, li, "li returned fine");
-    
+    var a = returnedLi.find("a");
+    ok(a.length === 1, "a found");
+    ok(a.attr("href") === attrHref, "href is ok");    
+    equal(a.html(), "<i></i>" + text, "a content is ok");
+    equal(a.attr("class"), text.toLowerCase(), "a class is ok");
+
+    deepEqual(called, false, "fasle before callback");
+    a.trigger("click");
+    deepEqual(called, true, "true after callback");
+
+    header.removeButton(0);
+    var li = buttonsUl.find("li");
+    ok(li.length === 0, "li button removed");
+
+    a.trigger("click");
+    deepEqual(called, true, "callback successfully removed");
 });
