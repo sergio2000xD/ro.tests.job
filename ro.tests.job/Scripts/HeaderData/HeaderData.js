@@ -1,27 +1,32 @@
 ﻿/*
     Possible object to return from server:
     ======================================
-    {
-	    headers:[
-            {
-                header: "Product Name"
-                subheader: "Aquos 70" 4K TV"
-            },
-            {
-                header: "Product ID"
-                subheader: "AQ-70-8321Z"
-            },
-            {
-                header: "Product Description"
-                subheader: "Television"
-            },
-            {
-                header: "Customers"
-                subheader: "Surveys"
-            }
-        ],
-        buttons:["Customers", "Surveys", "Edit"]    
-    }
+    var dataObj = {
+                headers: [
+                    {
+                        header: "Product Name",
+                        subheader: 'Aquos 70" 4K TV'
+                    },
+                    {
+                        header: "Product ID",
+                        subheader: "AQ-70-8321Z"
+                    },
+                    {
+                        header: "Product Description",
+                        subheader: "Television"
+                    },
+                    {
+                        header: "Customers",
+                        subheader: "Surveys"
+                    }
+                ],
+                buttons: ["Customers", "Surveys", "Edit"]
+            };
+
+    var mainDiv = $("#myHeader");
+    var header = new CM.Header(mainDiv);
+    var li1 = header.addButton("Edit", "#", function(e){ e.preventDefault(); alert('Edit clicked'); });
+    var li2 = header.addHeader("Conflict Minerals", "Components");
 */
 
 
@@ -39,8 +44,8 @@
                 buttonsDiv: "c4 buffer-clear",
                 headersUl: "header-list",
                 buttonsUl: "tabs pull-right",
-                titleSpan: "title",
-                subtitleSpan: "subtitle"
+                headerSpan: "title",
+                subheaderSpan: "subtitle"
             }
 
             var _mainDiv = div.addClass(_classes.mainDiv);
@@ -59,48 +64,74 @@
             _buttonsDiv.append(_buttonsUl)
 
             var _that = this;
-            _that.getMainDiv = function () {
-                return _mainDiv;
+            _that.builder = {                
+                getMainDiv: function () {
+                    return _mainDiv;
+                },
+                getClasses: function () {
+                    return _classes;
+                },
+                getButtonUl: function () {
+                    var _ul = _mainDiv.find("ul[class='" + _classes.buttonsUl + "']");
+                    return _ul;
+                },
+                getHeaderUl: function () {
+                    var _ul = _mainDiv.find("ul[class='" + _classes.headersUl + "']");
+                    return _ul;
+                },
+                getButtonLi: function (index) {
+                    var _ul = _that.builder.getButtonUl();
+                    var _li = _ul.find("li:eq(" + index + ")");
+                    return _li;
+                },
+                getHeaderLi: function (index) {
+                    var _ul = _that.builder.getHeaderUl();
+                    return _ul.find("li:eq(" + index + ")");
+                },
+                createButtonLi: function () {
+                    var _ul = _that.builder.getButtonUl();
+                    var _li = $("<li></li>");
+                    var _a = $("<a><i></i></a>");
+                    _li.append(_a);
+                    _ul.append(_li);
+                    return _li;
+                },
+                createHeaderLi: function () {
+                    var _ul = _that.builder.getHeaderUl();
+                    var _li = $("<li></li>");
+                    var _title = $("<span></span>").addClass(_classes.headerSpan);
+                    var _subtitle = $("<span></span>").addClass(_classes.subheaderSpan);
+
+                    _li.append(_title);
+                    _li.append(_subtitle);
+                    _ul.append(_li);
+
+                    return _li;
+                }
             }
+        }
 
-            _that.getClasses = function () {
-                return _classes;
-            }
-        }        
+        Header.prototype.addHeader = function (header, subheader) {
+            var _that = this;
+            var _li = _that.builder.createHeaderLi();
+            var _title = _li.find("span:eq(0)");
+            var _subtitle = _li.find("span:eq(1)");
 
-        Header.prototype.addHeader = function (title, subtitle) {
-            var _div = this.getMainDiv();
-            var _classes = this.getClasses();
-            var _ul = _div.find("ul[class='" + _classes.headersUl + "']");
-            var _li = $("<li></li>");
-            var _title = $("<span></span>").addClass(_classes.titleSpan);
-            var _subtitle = $("<span></span>").addClass(_classes.subtitleSpan);
-
-            _title.html(title);
-            _subtitle.html(subtitle);
-
-            _li.append(_title);
-            _li.append(_subtitle);
-
-            _ul.append(_li);
+            _title.html(header);
+            _subtitle.html(subheader);
 
             return _li;
         }
 
         Header.prototype.addButton = function (text, attrHref, onclickCallback) {
-            var _div = this.getMainDiv();
-            var _classes = this.getClasses();            
-            var _ul = _div.find("ul[class='" + _classes.buttonsUl + "']");
-            var _li = $("<li></li>");
-            var _a = $("<a><i></i></a>");
+            var _that = this;
+            var _li = _that.builder.createButtonLi();
+            var _a = _li.find("a:first");
 
             _a.addClass(text.toLowerCase()).append(text);
             _a.attr("href", attrHref || "#");
 
-            _li.append(_a);
-            _ul.append(_li);
-
-            if (onclickCallback || typeof onclickCallback === "function") {
+            if (onclickCallback && typeof onclickCallback === "function") {
                 _a.on("click", onclickCallback);
             }
 
@@ -108,18 +139,54 @@
         }
 
         Header.prototype.removeHeader = function (index) {
-            var _div = this.getMainDiv();
-            var _classes = this.getClasses();
-            var _ul = _div.find("ul[class='" + _classes.headersUl + "']");            
-            return _ul.find("li:eq(" + index + ")").remove();
+            var _li = this.builder.getHeaderLi(index).remove();
+            return _li;
         }
 
         Header.prototype.removeButton = function (index) {
-            var _div = this.getMainDiv();
-            var _classes = this.getClasses();            
-            var _ul = _div.find("ul[class='" + _classes.buttonsUl + "']");
-            var _li = _ul.find("li:eq(" + index + ")").remove();
+            var _li = this.builder.getButtonLi(index);
             _li.off(); // remove handlers
+            _li.remove();
+            return _li;
+        }
+
+        Header.prototype.load = function (dataObj) {
+            var that = this;
+
+            $.each(dataObj.headers, function (i, item) {
+                that.addHeader(item.header, item.subheader);
+            });
+
+            $.each(dataObj.buttons, function (i, item) {
+                that.addButton(item);
+            });
+        }
+
+        Header.prototype.on = function (index, eventName, callback) {
+            var _li = this.builder.getButtonLi(index);
+            var _a = _li.find("a");
+
+            if (_a.length > 0 && callback && typeof callback === "function") {
+                _a.on(eventName, callback);
+            }
+            return _a;
+        }
+
+        Header.prototype.off = function (index, events) {
+            var _li = this.builder.getButtonLi(index);
+            var _a = _li.find("a");
+
+            if (_li.length > 0 && index >= 0 && _a.length > 0) {
+                if (!events) {
+                    _a.off();
+                }
+
+                if (events) {
+                    _a.off(events);                    
+                }                
+                
+            }
+
             return _li;
         }
 
