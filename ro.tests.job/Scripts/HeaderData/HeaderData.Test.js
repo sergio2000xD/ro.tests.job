@@ -78,6 +78,7 @@ test("add button", 1, function () {
     var header = new CM.Header(mainDiv);
     var classes = header.builder.getClasses();
 
+    var icon = "link";
     var text = "Edit";
     var attrHref = "#";
     var called = false;
@@ -90,7 +91,7 @@ test("add button", 1, function () {
     ok(buttonsUl.length === 1, "buttons ul found");
     equal(buttonsUl.attr("class"), classes.buttonsUl, "buttons Ul has proper classes");
 
-    var returnedLi = header.addButton(text, attrHref, onclickCallback);    
+    var returnedLi = header.addButton(text, attrHref, icon, onclickCallback);    
 
     var li = buttonsUl.find("li");
     ok(li.length === 1, "li button found");    
@@ -98,7 +99,7 @@ test("add button", 1, function () {
     var a = returnedLi.find("a");
     ok(a.length === 1, "a found");
     ok(a.attr("href") === attrHref, "href is ok");    
-    equal(a.html(), '<I class=' + classes.linkI + '>' + classes.linkI + "</I>" + text, "a content is ok");
+    equal(a.html(), '<I class=' + icon + '>' + icon + "</I>" + text, "a content is ok");
     equal(a.attr("class"), text.toLowerCase(), "a class is ok");
 
     deepEqual(called, false, "fasle before callback");
@@ -112,7 +113,6 @@ test("add button", 1, function () {
     a.trigger("click");
     deepEqual(called, true, "callback successfully removed");
 });
-
 
 test("load data", 1, function () {
     expect(16);
@@ -139,6 +139,7 @@ test("load data", 1, function () {
         buttons: ["Customers", "Surveys", "Edit"]
     };
 
+    var icon = "";
     var mainDiv = $("#myHeader");
     var header = new CM.Header(mainDiv);
     header.load(dataObj);
@@ -157,7 +158,7 @@ test("load data", 1, function () {
     var classes = header.builder.getClasses();
     for (var i = 0; i < dataObj.buttons.length; i++) {
         var li = header.builder.getButtonLi(i);
-        equal(li.find("a").html(), '<I class=' + classes.linkI + '>' + classes.linkI + "</I>" + dataObj.buttons[i], "button " + i + " text is correct");
+        equal(li.find("a").html(), '<I>' + icon + "</I>" + dataObj.buttons[i], "button " + i + " text is correct");
         equal(li.find("a").attr("href"), "#", "button " + i + " href is correct");        
     }
 });
@@ -219,4 +220,35 @@ test("handle events", 1, function () {
     header.off(2, "click");
     a.trigger("click");
     equal(clicked, true, "clicked remains true");    
+});
+
+test("set icon", 1, function () {
+    expect(8);
+
+    var mainDiv = $("#myHeader");
+    var header = new CM.Header(mainDiv);
+    var classes = header.builder.getClasses();
+
+    var icon = "link";
+    var text = "Edit";
+    var attrHref = "#";
+    var called = false;
+        
+    var returnedLi = header.addButton(text);
+    
+
+    var a = returnedLi.find("a");
+    ok(a.length === 1, "a found");
+    ok(a.attr("href") === attrHref, "href is ok");
+    equal(a.html(), "<I></I>" + text, "a content is ok before icon");
+    equal(a.attr("class"), text.toLowerCase(), "a class is ok");
+
+    header.setIcon(0, icon);
+    equal(a.html(), '<I class=' + icon + '>' + icon + "</I>" + text, "a content is ok after icon");
+    equal(a.attr("class"), text.toLowerCase(), "a class is ok");
+
+    header.removeIcon(0);
+    equal(a.html(), "<I></I>" + text, "a content icon removed ok");
+    equal(a.attr("class"), text.toLowerCase(), "a class is ok");
+    
 });

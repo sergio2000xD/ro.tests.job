@@ -45,8 +45,7 @@
                 headersUl: "header-list",
                 buttonsUl: "tabs pull-right",
                 headerSpan: "title",
-                subheaderSpan: "subtitle",
-                linkI: "link"
+                subheaderSpan: "subtitle"                
             }
 
             var _mainDiv = div.addClass(_classes.mainDiv);
@@ -89,16 +88,17 @@
                     var _ul = _that.builder.getHeaderUl();
                     return _ul.find("li:eq(" + index + ")");
                 },
-                createButtonLi: function () {
+                createButtonLi: function (icon) {                    
                     var _ul = _that.builder.getButtonUl();
                     var _li = $("<li></li>");
-                    var _i = $("<i></i>");
-                    _i.addClass(_classes.linkI);
-                    _i.html(_classes.linkI);
+                    var _i = $("<i></i>");                                        
                     var _a = $("<a></a>");
                     _a.append(_i);
                     _li.append(_a);
                     _ul.append(_li);
+
+                    _that.setIcon(_li.index(), icon);
+
                     return _li;
                 },
                 createHeaderLi: function () {
@@ -128,9 +128,9 @@
             return _li;
         }
 
-        Header.prototype.addButton = function (text, attrHref, onClickCallback) {
+        Header.prototype.addButton = function (text, attrHref, icon, onClickCallback) {
             var _that = this;
-            var _li = _that.builder.createButtonLi();
+            var _li = _that.builder.createButtonLi(icon);
             var _a = _li.find("a:first");
 
             _a.addClass(text.toLowerCase()).append(text);
@@ -191,6 +191,26 @@
             }
 
             return _li;
+        }
+
+        Header.prototype.setIcon = function (index, icon) {
+            var _li = this.builder.getButtonLi(index);
+            var _i = _li.find("a > i");
+            
+            _i.addClass(icon);
+            _i.html(icon);
+
+            return _i;
+        }
+
+        Header.prototype.removeIcon = function (index) {
+            var _li = this.builder.getButtonLi(index);
+            var _i = _li.find("a > i");
+
+            _i.removeClass();
+            _i.empty();
+
+            return _i;
         }
 
         return Header;
