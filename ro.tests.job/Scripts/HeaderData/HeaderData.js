@@ -45,7 +45,8 @@
                 headersUl: "header-list",
                 buttonsUl: "tabs pull-right",
                 headerSpan: "title",
-                subheaderSpan: "subtitle"
+                subheaderSpan: "subtitle",
+                linkI: "link"
             }
 
             var _mainDiv = div.addClass(_classes.mainDiv);
@@ -91,7 +92,11 @@
                 createButtonLi: function () {
                     var _ul = _that.builder.getButtonUl();
                     var _li = $("<li></li>");
-                    var _a = $("<a><i></i></a>");
+                    var _i = $("<i></i>");
+                    _i.addClass(_classes.linkI);
+                    _i.html(_classes.linkI);
+                    var _a = $("<a></a>");
+                    _a.append(_i);
                     _li.append(_a);
                     _ul.append(_li);
                     return _li;

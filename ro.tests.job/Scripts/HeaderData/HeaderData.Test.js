@@ -98,7 +98,7 @@ test("add button", 1, function () {
     var a = returnedLi.find("a");
     ok(a.length === 1, "a found");
     ok(a.attr("href") === attrHref, "href is ok");    
-    equal(a.html(), "<I></I>" + text, "a content is ok");
+    equal(a.html(), '<I class=' + classes.linkI + '>' + classes.linkI + "</I>" + text, "a content is ok");
     equal(a.attr("class"), text.toLowerCase(), "a class is ok");
 
     deepEqual(called, false, "fasle before callback");
@@ -154,9 +154,10 @@ test("load data", 1, function () {
         equal(li.find("span:eq(1)").html(), dataObj.headers[i].subheader, "subheader " + i + " text is correct");
     }
 
+    var classes = header.builder.getClasses();
     for (var i = 0; i < dataObj.buttons.length; i++) {
         var li = header.builder.getButtonLi(i);
-        equal(li.find("a").html(), "<I></I>" + dataObj.buttons[i], "button " + i + " text is correct");
+        equal(li.find("a").html(), '<I class=' + classes.linkI + '>' + classes.linkI + "</I>" + dataObj.buttons[i], "button " + i + " text is correct");
         equal(li.find("a").attr("href"), "#", "button " + i + " href is correct");        
     }
 });
