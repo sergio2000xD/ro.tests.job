@@ -64,7 +64,7 @@
             _buttonsDiv.append(_buttonsUl)
 
             var _that = this;
-            _that.builder = {                
+            _that.builder = {
                 getMainDiv: function () {
                     return _mainDiv;
                 },
@@ -123,7 +123,7 @@
             return _li;
         }
 
-        Header.prototype.addButton = function (text, attrHref, onclickCallback) {
+        Header.prototype.addButton = function (text, attrHref, onClickCallback) {
             var _that = this;
             var _li = _that.builder.createButtonLi();
             var _a = _li.find("a:first");
@@ -131,8 +131,8 @@
             _a.addClass(text.toLowerCase()).append(text);
             _a.attr("href", attrHref || "#");
 
-            if (onclickCallback && typeof onclickCallback === "function") {
-                _a.on("click", onclickCallback);
+            if (onClickCallback && typeof onClickCallback === "function") {
+                _a.on("click", onClickCallback);
             }
 
             return _li;
@@ -145,7 +145,7 @@
 
         Header.prototype.removeButton = function (index) {
             var _li = this.builder.getButtonLi(index);
-            _li.off(); // remove handlers
+            this.off(index); // remove handlers
             _li.remove();
             return _li;
         }
@@ -177,14 +177,12 @@
             var _a = _li.find("a");
 
             if (_li.length > 0 && index >= 0 && _a.length > 0) {
-                if (!events) {
+                if (events) {
+                    _a.off(events);
+                }
+                else {
                     _a.off();
                 }
-
-                if (events) {
-                    _a.off(events);                    
-                }                
-                
             }
 
             return _li;
